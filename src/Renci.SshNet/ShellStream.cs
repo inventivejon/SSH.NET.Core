@@ -112,6 +112,23 @@ namespace Renci.SshNet
             }
         }
 
+        /// <summary>
+        /// Function to change the current size of the stream
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <param name="rows"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public void SendWindowChangeRequest(uint columns, uint rows, uint width, uint height)
+        {
+            if(this._channel == null)
+            {
+                throw new ObjectDisposedException("ShellStream");
+            }
+
+            this._channel.SendWindowChangeRequest(columns, rows, width, height);
+        }
+
         #region Stream overide methods
 
         /// <summary>
@@ -691,6 +708,24 @@ namespace Renci.SshNet
             }
 
             var data = _encoding.GetBytes(text);
+            _channel.SendData(data);
+        }
+
+        /// <summary>
+        /// Writes the specified text to the shell.
+        /// </summary>
+        /// <param name="singleChar">The text to be written to the shell.</param>
+        /// <remarks>
+        /// If <paramref name="singleChar"/> is <c>null</c>, nothing is written.
+        /// </remarks>
+        public void Write(char singleChar)
+        {
+            if (_channel == null)
+            {
+                throw new ObjectDisposedException("ShellStream");
+            }
+
+            var data = new byte[1] { Convert.ToByte(singleChar) };
             _channel.SendData(data);
         }
 
