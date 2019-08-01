@@ -193,6 +193,10 @@ namespace Renci.SshNet
                     _key = new RsaKey(decryptedData);
                     HostKey = new KeyHostAlgorithm("ssh-rsa", _key);
                     break;
+                case "OPENSSH":
+                    _key = new RsaKey(decryptedData);
+                    HostKey = new KeyHostAlgorithm("ssh-rsa", _key);
+                    break;
                 case "DSA":
                     _key = new DsaKey(decryptedData);
                     HostKey = new KeyHostAlgorithm("ssh-dss", _key);
